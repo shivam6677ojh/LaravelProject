@@ -15,13 +15,13 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-main antialiased text-slate-900">
-        <div class="min-h-screen bg-slate-50">
+    <body class="font-main antialiased text-slate-900 bg-gradient-to-br from-slate-50 via-sky-50 to-slate-50">
+        <div class="min-h-screen">
             @include('layouts.navigation')
 
             <!-- Page Heading -->
             @isset($header)
-                <header class="bg-white/80 backdrop-blur border-b border-slate-200">
+                <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b-2 border-yoga-100 shadow-sm">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
@@ -32,6 +32,41 @@
             <main>
                 {{ $slot }}
             </main>
+
+            <!-- Footer -->
+            <footer class="mt-20 bg-gradient-to-r from-yoga-900 to-zen-900 text-white py-12">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                        <div>
+                            <h3 class="font-bold text-lg mb-4">🧘 YogaPlanner</h3>
+                            <p class="text-white/80 text-sm">Discover your perfect yoga journey</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold mb-4">Platform</h4>
+                            <ul class="space-y-2 text-sm text-white/80">
+                                <li><a href="#" class="hover:text-white transition">Plans</a></li>
+                                <li><a href="#" class="hover:text-white transition">Bookings</a></li>
+                                <li><a href="#" class="hover:text-white transition">Chat</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold mb-4">Company</h4>
+                            <ul class="space-y-2 text-sm text-white/80">
+                                <li><a href="#" class="hover:text-white transition">About</a></li>
+                                <li><a href="#" class="hover:text-white transition">Contact</a></li>
+                                <li><a href="#" class="hover:text-white transition">Privacy</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold mb-4">Newsletter</h4>
+                            <p class="text-white/80 text-sm mb-3">Get yoga tips delivered weekly</p>
+                        </div>
+                    </div>
+                    <div class="border-t border-white/20 mt-8 pt-8 text-center text-white/60 text-sm">
+                        <p>&copy; 2026 YogaPlanner. All rights reserved. 🌟</p>
+                    </div>
+                </div>
+            </footer>
         </div>
     </body>
 </html>

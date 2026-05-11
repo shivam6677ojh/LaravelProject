@@ -1,61 +1,87 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-2xl text-slate-900 leading-tight">Yoga Plans</h2>
-            <a href="{{ route('plans.create') }}" class="rounded-xl bg-slate-900 px-4 py-2 text-white text-sm font-semibold hover:bg-slate-700">
-                + Create Plan
+            <h2 class="section-title">🌅 Yoga Plans</h2>
+            <a href="{{ route('plans.create') }}" class="btn btn-primary">
+                ✨ Create Plan
             </a>
         </div>
     </x-slot>
 
-    <div class="py-10">
+    <div class="py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             @if (session('success'))
-                <div class="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-700">
-                    {{ session('success') }}
+                <div class="mb-6 rounded-xl border-2 border-sage-300 bg-sage-50 px-6 py-4 text-sage-700 font-medium shadow-md">
+                    ✅ {{ session('success') }}
                 </div>
             @endif
 
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+            <div class="grid-card">
                 @forelse ($plans as $plan)
-                    <div class="glass-card p-5 flex flex-col">
-                        <div class="flex items-start justify-between gap-4">
-                            <div>
-                                <h3 class="text-lg font-semibold text-slate-900">{{ $plan->title }}</h3>
-                                <p class="text-xs text-slate-500 mt-1">By {{ $plan->user->name }}</p>
+                    <div class="glass-card p-6 flex flex-col hover-lift group">
+                        <!-- Header -->
+                        <div class="flex items-start justify-between gap-4 mb-4">
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-gradient-yoga group-hover:text-yoga-600 transition-all">
+                                    {{ $plan->title }}
+                                </h3>
+                                <p class="text-sm text-slate-500 mt-2">👤 By <span class="font-medium text-slate-700">{{ $plan->user->name }}</span></p>
                             </div>
-                            <span class="rounded-full bg-sky-100 text-sky-700 text-xs px-2 py-1">{{ $plan->duration }} min</span>
+                            <span class="badge badge-yoga shrink-0">⏱️ {{ $plan->duration }} min</span>
                         </div>
 
-                        <p class="mt-4 text-sm text-slate-600 flex-grow">{{ $plan->description }}</p>
+                        <!-- Description -->
+                        <p class="text-sm text-slate-600 flex-grow mb-4 leading-relaxed">{{ Str::limit($plan->description, 120) }}</p>
 
-                        <p class="mt-3 text-xs text-slate-500">Bookings: {{ $plan->bookings->count() }}</p>
+                        <!-- Stats -->
+                        <div class="mb-4 flex items-center gap-2 text-xs text-slate-500">
+                            <span class="inline-block w-2 h-2 rounded-full bg-sage-400"></span>
+                            <span>📊 <strong>{{ $plan->bookings->count() }}</strong> bookings</span>
+                        </div>
 
-                        <div class="mt-4 flex items-center gap-2">
+                        <!-- Divider -->
+                        <div class="divider my-4"></div>
+
+                        <!-- Actions -->
+                        <div class="mt-auto flex items-center gap-2">
                             @if ($plan->user_id === auth()->id())
-                                <a href="{{ route('plans.edit', $plan) }}" class="rounded-lg border border-slate-300 px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-100">Edit</a>
+                                <a href="{{ route('plans.edit', $plan) }}" class="btn btn-outline btn-sm flex-1">
+                                    ✏️ Edit
+                                </a>
 
-                                <form method="POST" action="{{ route('plans.destroy', $plan) }}" onsubmit="return confirm('Delete this plan?')">
+                                <form method="POST" action="{{ route('plans.destroy', $plan) }}" class="flex-1" onsubmit="return confirm('Delete this plan?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="rounded-lg border border-rose-300 px-3 py-2 text-xs font-medium text-rose-700 hover:bg-rose-50">Delete</button>
+                                    <button type="submit" class="btn btn-sm w-full bg-rose-500 text-white hover:bg-rose-600">
+                                        🗑️ Delete
+                                    </button>
                                 </form>
                             @else
-                                <form method="POST" action="{{ route('plans.book', $plan) }}">
+                                <form method="POST" action="{{ route('plans.book', $plan) }}" class="w-full">
                                     @csrf
-                                    <button type="submit" class="rounded-lg bg-emerald-600 px-3 py-2 text-xs font-semibold text-white hover:bg-emerald-500">Book Plan</button>
+                                    <button type="submit" class="btn btn-primary btn-sm w-full">
+                                        📌 Book Plan
+                                    </button>
                                 </form>
                             @endif
                         </div>
                     </div>
                 @empty
-                    <div class="md:col-span-2 xl:col-span-3 glass-card p-6 text-slate-500">
-                        No plans available yet. Start by creating one.
+                    <div class="md:col-span-2 lg:col-span-3">
+                        <div class="card-primary p-8 text-center">
+                            <p class="text-2xl mb-3">🧘‍♀️</p>
+                            <p class="text-lg font-semibold text-yoga-900">No plans available yet</p>
+                            <p class="text-slate-700 mt-2">Start by creating a new yoga plan!</p>
+                            <a href="{{ route('plans.create') }}" class="btn btn-primary mt-4">
+                                ✨ Create Your First Plan
+                            </a>
+                        </div>
                     </div>
                 @endforelse
             </div>
 
-            <div class="mt-6">
+            <!-- Pagination -->
+            <div class="mt-8">
                 {{ $plans->links() }}
             </div>
         </div>

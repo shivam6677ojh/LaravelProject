@@ -1,10 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-2xl text-slate-900 leading-tight">
+            <h2 class="section-title">
                 {{ __('YogaPlanner Dashboard') }}
             </h2>
-            <a href="{{ route('plans.create') }}" class="rounded-xl bg-slate-900 px-4 py-2 text-white text-sm font-semibold hover:bg-slate-700">
+            <a href="{{ route('plans.create') }}" class="btn btn-primary">
                 + New Plan
             </a>
         </div>
@@ -12,37 +12,74 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="glass-card p-5">
-                    <p class="text-sm text-slate-500">Total Plans</p>
-                    <p class="mt-1 text-3xl font-bold text-slate-900">{{ $totalPlans }}</p>
+            <!-- Stats Cards -->
+            <div class="grid-card">
+                <div class="glass-card p-6 hover-lift">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-slate-600">Total Plans</p>
+                            <p class="mt-2 text-4xl font-bold text-gradient-yoga">{{ $totalPlans }}</p>
+                        </div>
+                        <div class="text-5xl opacity-10">🧘</div>
+                    </div>
                 </div>
-                <div class="glass-card p-5">
-                    <p class="text-sm text-slate-500">My Bookings</p>
-                    <p class="mt-1 text-3xl font-bold text-slate-900">{{ $totalBookings }}</p>
+                <div class="glass-card p-6 hover-lift">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-slate-600">My Bookings</p>
+                            <p class="mt-2 text-4xl font-bold text-gradient-cool">{{ $totalBookings }}</p>
+                        </div>
+                        <div class="text-5xl opacity-10">📅</div>
+                    </div>
                 </div>
-                <div class="glass-card p-5">
-                    <p class="text-sm text-slate-500">Chat Activity</p>
-                    <p class="mt-1 text-3xl font-bold text-slate-900">{{ $totalChats }}</p>
+                <div class="glass-card p-6 hover-lift">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-slate-600">Chat Activity</p>
+                            <p class="mt-2 text-4xl font-bold text-gradient-yoga">{{ $totalChats }}</p>
+                        </div>
+                        <div class="text-5xl opacity-10">💬</div>
+                    </div>
                 </div>
             </div>
 
-            <div class="glass-card p-6">
-                <h3 class="text-lg font-semibold text-slate-900">Recent Activity</h3>
-                <div class="mt-4 space-y-3">
+            <!-- Recent Activity Section -->
+            <div class="glass-card p-8">
+                <div class="section-header">
+                    <h3 class="text-2xl font-bold text-gradient-yoga">Recent Activity</h3>
+                </div>
+                <div class="space-y-3">
                     @forelse ($recentActivity as $activity)
-                        <div class="rounded-xl border border-slate-200 px-4 py-3 flex items-center justify-between">
-                            <div>
-                                <p class="font-medium text-slate-800">Booked: {{ $activity->plan?->title ?? 'Yoga Plan' }}</p>
-                                <p class="text-xs text-slate-500">{{ optional($activity->booked_at ?? $activity->created_at)->diffForHumans() }}</p>
+                        <div class="flex items-center justify-between p-4 rounded-xl border-2 border-slate-100 hover:border-yoga-200 hover:bg-yoga-50/30 transition-all duration-300 group">
+                            <div class="flex-1">
+                                <p class="font-semibold text-slate-800 group-hover:text-yoga-600 transition-colors">
+                                    📍 Booked: {{ $activity->plan?->title ?? 'Yoga Plan' }}
+                                </p>
+                                <p class="text-xs text-slate-500 mt-1">{{ optional($activity->booked_at ?? $activity->created_at)->diffForHumans() }}</p>
                             </div>
-                            <span class="text-xs rounded-full px-2 py-1 bg-emerald-100 text-emerald-700 uppercase">
+                            <span class="badge badge-sage">
                                 {{ $activity->status }}
                             </span>
                         </div>
                     @empty
-                        <p class="text-slate-500">No recent booking activity yet.</p>
+                        <div class="text-center py-8">
+                            <p class="text-slate-500 text-lg">No recent booking activity yet.</p>
+                            <p class="text-slate-400 text-sm mt-2">Start exploring plans to get started! 🌟</p>
+                        </div>
                     @endforelse
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card-primary p-8">
+                <h3 class="text-xl font-bold text-yoga-900 mb-4">Quick Actions</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <a href="{{ route('plans.index') }}" class="btn btn-secondary w-full">
+                        🌅 Browse All Plans
+                    </a>
+                    <a href="{{ route('dashboard') }}" class="btn btn-sage w-full">
+                        💬 Start Chat Session
+                    </a>
                 </div>
             </div>
         </div>
